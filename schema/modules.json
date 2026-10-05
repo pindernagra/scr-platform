@@ -1,0 +1,92 @@
+{
+  "overview": {"label": "Overview", "kind": "summary"},
+  "admissionInfo": {"label": "Admission Information", "kind": "admission"},
+
+  "dailyAssessment": {"label": "Daily Assessment", "kind": "systemsChecklist"},
+  "vitalsRecord": {"label": "Vital Signs", "kind": "flowsheetTable", "addable": true,
+    "columns": [{"key":"time","label":"Time"},{"key":"temp","label":"Temp"},{"key":"pulse","label":"Pulse"},
+      {"key":"resp","label":"Resp"},{"key":"bp","label":"BP"},{"key":"o2","label":"O2 Sat"},{"key":"by","label":"Charted by"}]},
+  "ioRecord": {"label": "I/O Record", "kind": "ioRecord"},
+  "bloodGlucose": {"label": "Blood Glucose", "kind": "flowsheetTable", "addable": true,
+    "columns": [{"key":"time","label":"Time"},{"key":"meal","label":"Meal"},{"key":"reading","label":"Reading"},{"key":"comment","label":"Comment"}]},
+  "braden": {"label": "Braden Scale", "kind": "scoredForm", "scoring": {"type":"sum",
+      "bands": [[0,9,"Severe risk"],[10,12,"High risk"],[13,14,"Moderate risk"],[15,18,"Mild risk"],[19,99,"Not at risk"]]},
+    "fields": [
+      {"key":"sensory","label":"Sensory perception","options":[["1","Completely limited"],["2","Very limited"],["3","Slightly limited"],["4","No impairment"]]},
+      {"key":"moisture","label":"Moisture","options":[["1","Constantly moist"],["2","Moist"],["3","Occasionally moist"],["4","Rarely moist"]]},
+      {"key":"activity","label":"Activity","options":[["1","Bedfast"],["2","Chairfast"],["3","Walks occasionally"],["4","Walks frequently"]]},
+      {"key":"mobility","label":"Mobility","options":[["1","Completely immobile"],["2","Very limited"],["3","Slightly limited"],["4","No limitations"]]},
+      {"key":"nutrition","label":"Nutrition","options":[["1","Very poor"],["2","Probably inadequate"],["3","Adequate"],["4","Excellent"]]},
+      {"key":"friction","label":"Friction & shear","options":[["1","Problem"],["2","Potential problem"],["3","No apparent problem"]]}
+    ]},
+  "fallsRisk": {"label": "Falls Risk", "kind": "scoredForm", "scoring": {"type":"countValue","value":"yes",
+      "bands": [[0,1,"Low fall risk — routine safety measures."],[2,3,"Moderate fall risk — standard precautions."],[4,99,"High fall risk — full precautions."]]},
+    "fields": [
+      {"key":"history","label":"History of falls (6 mo) or recent facility move","options":[["yes","Yes"],["no","No"]]},
+      {"key":"orthostatic","label":"Orthostatic hypotension / hypertension / vertigo","options":[["yes","Yes"],["no","No"]]},
+      {"key":"cognitive","label":"Cognitive or mood alteration","options":[["yes","Yes"],["no","No"]]},
+      {"key":"mobility","label":"Impaired mobility, balance, or gait","options":[["yes","Yes"],["no","No"]]},
+      {"key":"weakness","label":"Generalized weakness","options":[["yes","Yes"],["no","No"]]},
+      {"key":"visual","label":"Visual or perceptual deficits","options":[["yes","Yes"],["no","No"]]},
+      {"key":"elimination","label":"Urinary/bowel urgency or frequency","options":[["yes","Yes"],["no","No"]]},
+      {"key":"meds","label":"High-risk medications","options":[["yes","Yes"],["no","No"]]}
+    ]},
+  "mse": {"label": "Mental Status Exam", "kind": "structuredForm", "fields": [
+      {"key":"appearance","label":"General appearance","type":"select","options":["Appears stated age","Well-groomed","Unkempt","Dressed inappropriately for season"]},
+      {"key":"behavior","label":"Behavior","type":"select","options":["Cooperative","Guarded","Agitated","Withdrawn"]},
+      {"key":"mood","label":"Mood (reported)","type":"select","options":["Normal","Anxious","Depressed","Angry","Euphoric"]},
+      {"key":"affect","label":"Affect","type":"select","options":["Euthymic","Flat","Blunted","Labile","Anxious"]},
+      {"key":"thoughtProcess","label":"Thought process","type":"select","options":["Logical","Disorganized","Tangential","Flight of ideas"]},
+      {"key":"speech","label":"Speech","type":"select","options":["Normal rate/rhythm/volume","Pressured","Slowed","Slurred"]},
+      {"key":"cognition","label":"Cognition","type":"select","options":["Alert and oriented x4","Oriented x3","Oriented x2","Oriented x1","Disoriented"]},
+      {"key":"insight","label":"Insight & judgment","type":"select","options":["Full","Partial","Limited","Absent"]},
+      {"key":"safety","label":"Suicide/safety screen","type":"select","options":["No ideation, no plan, denies risk","Passive ideation, no plan","Active ideation with plan — notify provider immediately"]},
+      {"key":"notes","label":"Notes","type":"textarea"}
+    ]},
+  "wound": {"label": "Wound Care", "kind": "structuredForm", "fields": [
+      {"key":"type","label":"Wound type/etiology","type":"text"},
+      {"key":"length","label":"Length (cm)","type":"number"},
+      {"key":"width","label":"Width (cm)","type":"number"},
+      {"key":"depth","label":"Depth (cm)","type":"number"},
+      {"key":"bed","label":"Wound bed","type":"text"},
+      {"key":"exudate","label":"Exudate amount","type":"select","options":["None","Scant","Moderate","Large"]},
+      {"key":"exudateType","label":"Exudate type","type":"select","options":["Serous","Serosanguineous","Sanguineous","Purulent"]},
+      {"key":"odor","label":"Odor present","type":"select","options":["Yes","No"]},
+      {"key":"periwound","label":"Peri-wound skin","type":"text"},
+      {"key":"pain","label":"Wound pain (0–10)","type":"number"},
+      {"key":"plan","label":"Treatment plan","type":"textarea"}
+    ]},
+  "notes": {"label": "Progress Notes", "kind": "notes"},
+
+  "mar": {"label": "MAR", "kind": "mar"},
+  "bpmh": {"label": "Best Possible Med. History", "kind": "flowsheetTable", "addable": false,
+    "columns": [{"key":"med","label":"Medication"},{"key":"dose","label":"Home dose/route"},{"key":"freq","label":"Frequency"},
+      {"key":"last","label":"Last taken"},{"key":"source","label":"Source"},{"key":"recon","label":"Reconciliation"}]},
+
+  "orders": {"label": "Orders", "kind": "ordersTable"},
+  "labs": {"label": "Diagnostics", "kind": "flowsheetTable", "addable": false,
+    "columns": [{"key":"test","label":"Test"},{"key":"result","label":"Result"},{"key":"range","label":"Reference range"},{"key":"category","label":"Category"}]},
+  "imaging": {"label": "Diagnostic Imaging", "kind": "docList"},
+  "reports": {"label": "Reports & Results", "kind": "docList"},
+  "alliedHealth": {"label": "Allied Health", "kind": "docList", "showProfession": true},
+  "bloodBank": {"label": "Blood Bank", "kind": "docList"},
+
+  "rtAssessment": {"label": "Respiratory Assessment", "kind": "structuredForm", "fields": [
+      {"key":"device","label":"O2 device","type":"select","options":["Room air","Nasal cannula","Simple mask","Non-rebreather","High-flow","Ventilator","BiPAP/CPAP"]},
+      {"key":"flow","label":"Flow rate / FiO2","type":"text"},
+      {"key":"sats","label":"SpO2 on current device","type":"text"},
+      {"key":"workOfBreathing","label":"Work of breathing","type":"select","options":["Unlabored","Mild distress","Moderate distress","Severe distress"]},
+      {"key":"breathSounds","label":"Breath sounds","type":"text"},
+      {"key":"secretions","label":"Secretions","type":"text"},
+      {"key":"plan","label":"Respiratory plan/treatments","type":"textarea"}
+    ]},
+  "hcaCare": {"label": "Personal Care & ADLs", "kind": "structuredForm", "fields": [
+      {"key":"mobility","label":"Mobility","type":"select","options":["Independent","Supervision","1-person assist","2-person assist","Total assist"]},
+      {"key":"nutrition","label":"Nutrition/hydration","type":"text"},
+      {"key":"elimination","label":"Elimination","type":"text"},
+      {"key":"skin","label":"Skin observation","type":"text"},
+      {"key":"cognitive","label":"Cognitive/communication observation","type":"text"},
+      {"key":"safety","label":"Safety observations","type":"textarea"},
+      {"key":"reportTo","label":"Reported to nurse (what/when)","type":"textarea"}
+    ]}
+}

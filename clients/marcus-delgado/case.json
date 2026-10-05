@@ -1,0 +1,52 @@
+{
+  "id": "marcus-delgado",
+  "identification": {
+    "name": "Delgado, Marcus",
+    "preferredName": "Marcus",
+    "pronouns": "he/him",
+    "dob": "1968-08-02",
+    "mrn": "00447-A",
+    "mostResponsibleProvider": "Dr. R. Halvorsen, Orthopedic Surgery",
+    "reasonForEncounter": "Right total knee arthroplasty",
+    "location": "Surgical Unit, Room 208",
+    "codeStatus": "Full code",
+    "allergies": [],
+    "alerts": ["Post-op DVT prophylaxis"],
+    "diagnoses": ["Osteoarthritis, right knee, s/p total knee arthroplasty", "Hypertension"],
+    "precautions": ["Fall precautions", "Weight-bearing as tolerated with walker"]
+  },
+  "meta": {
+    "discipline": ["Nursing", "Allied Health", "Interprofessional"],
+    "learnerLevel": "Introductory",
+    "setting": "Surgical",
+    "focusTags": ["Post-op care", "Wound care", "Mobility", "Falls"]
+  },
+  "assessmentSystems": ["safety","neuro","cardiac","resp","gi","gu","msk","integ","pain"],
+  "admissionInfo": {
+    "contacts": [{"name": "Sarah Delgado", "relation": "Spouse", "phone": "250-555-0192"}],
+    "address": "58 Pineview Rd, Kamloops, BC",
+    "historyOfAdmission": "Elective admission for right total knee arthroplasty for end-stage osteoarthritis, unresponsive to conservative management.",
+    "pastHealthHistory": ["Osteoarthritis, bilateral knees", "Hypertension, well controlled", "Former smoker, quit 10 years ago"],
+    "planOfCare": "Post-op pain management, DVT prophylaxis, early mobilization with PT, wound care, discharge home with outpatient PT once safety criteria met."
+  },
+  "feedback": false,
+  "exportable": true,
+  "sections": [
+    {"key": "overview", "label": "Overview"},
+    {"key": "admissionInfo", "label": "Admission Information"},
+    {"key": "nursingCare", "label": "Nursing Care", "folder": true, "children": [
+      {"key": "dailyAssessment", "label": "Daily Assessment"},
+      {"key": "vitalsRecord", "label": "Vital Signs"},
+      {"key": "braden", "label": "Braden Scale"},
+      {"key": "fallsRisk", "label": "Falls Risk"},
+      {"key": "wound", "label": "Wound Care"},
+      {"key": "notes", "label": "Progress Notes"}
+    ]},
+    {"key": "medication", "label": "Medication", "folder": true, "children": [
+      {"key": "mar", "label": "MAR"}
+    ]},
+    {"key": "orders", "label": "Orders"},
+    {"key": "alliedHealth", "label": "Allied Health"},
+    {"key": "reports", "label": "Reports & Results"}
+  ]
+}

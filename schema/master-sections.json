@@ -1,0 +1,29 @@
+[
+  {"key": "overview", "label": "Overview"},
+  {"key": "admissionInfo", "label": "Admission Information"},
+  {"key": "nursingCare", "label": "Nursing Care", "folder": true, "children": [
+    {"key": "dailyAssessment", "label": "Daily Assessment"},
+    {"key": "vitalsRecord", "label": "Vital Signs"},
+    {"key": "ioRecord", "label": "I/O Record"},
+    {"key": "bloodGlucose", "label": "Blood Glucose"},
+    {"key": "braden", "label": "Braden Scale"},
+    {"key": "fallsRisk", "label": "Falls Risk"},
+    {"key": "mse", "label": "Mental Status Exam"},
+    {"key": "wound", "label": "Wound Care"},
+    {"key": "notes", "label": "Progress Notes"}
+  ]},
+  {"key": "medication", "label": "Medication", "folder": true, "children": [
+    {"key": "mar", "label": "MAR"},
+    {"key": "bpmh", "label": "Best Possible Med. History"}
+  ]},
+  {"key": "orders", "label": "Orders"},
+  {"key": "labs", "label": "Diagnostics"},
+  {"key": "imaging", "label": "Diagnostic Imaging"},
+  {"key": "reports", "label": "Reports & Results"},
+  {"key": "alliedHealth", "label": "Allied Health"},
+  {"key": "bloodBank", "label": "Blood Bank"},
+  {"key": "respiratoryTherapy", "label": "Respiratory Therapy", "folder": true, "children": [
+    {"key": "rtAssessment", "label": "Respiratory Assessment"}
+  ]},
+  {"key": "hcaCare", "label": "Personal Care & ADLs"}
+]

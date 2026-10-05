@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simulated Client Records</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js"></script>
+<style>
+  :root{
+    --bg:#EEF1F4; --panel:#FFFFFF; --ink:#1D2733; --muted:#5B6B7C;
+    --accent:#0F6B5C; --accent-soft:#E4F2EF; --warn:#B5651D; --warn-soft:#FBEEE1;
+    --danger:#B23A48; --danger-soft:#F7E6E8; --line:#D7DEE5;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --bg:#12161B; --panel:#1A2027; --ink:#E7ECF1; --muted:#93A2B3;
+    --accent:#3FBFA6; --accent-soft:#183028; --warn:#E3A45C; --warn-soft:#2E2418;
+    --danger:#E08590; --danger-soft:#2E1B1E; --line:#2B3440; } }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:'Public Sans',system-ui,sans-serif;}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;}
+  header{background:var(--panel); border-bottom:1px solid var(--line); padding:calc(14px + env(safe-area-inset-top,0px)) 20px 14px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .brand{font-weight:700; font-size:15px; color:var(--accent);}
+  .hdr-btn{border:1px solid var(--line); background:var(--panel); color:var(--ink); padding:6px 11px; border-radius:6px; font-size:12.5px; font-weight:600; cursor:pointer; margin-left:6px;}
+  main{max-width:960px; margin:0 auto; padding:20px; padding-bottom:60px;}
+  .roster-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px;}
+  .client-card{background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:16px; cursor:pointer;}
+  .client-card:hover{border-color:var(--accent);}
+  .client-card .name{font-weight:700; font-size:15.5px;}
+  .client-card .meta{font-size:12px; color:var(--muted); margin-top:2px;}
+  .client-card .tag{margin-top:8px; font-size:12.5px;}
+  .pillrow{margin-top:10px; display:flex; flex-wrap:wrap; gap:5px;}
+  .pill{font-size:10.5px; font-weight:700; color:var(--accent); background:var(--accent-soft); padding:2px 7px; border-radius:10px;}
+  #screen-chart{display:none;}
+  .headrow{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:14px;}
+  .client-name{font-size:20px; font-weight:600;}
+  .client-meta{font-size:12.5px; color:var(--muted);}
+  .stagebar{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;}
+  .stagebtn{border:1px solid var(--line); background:var(--panel); color:var(--ink); padding:6px 12px; border-radius:6px; font-size:12.5px; font-weight:600; cursor:pointer;}
+  .stagebtn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .stagemeta{font-size:11.5px; color:var(--muted); text-align:right; margin-top:4px;}
+  nav.navrow{display:flex; gap:2px; background:var(--panel); border:1px solid var(--line); padding:0 16px; overflow-x:auto;}
+  nav.navrow:first-of-type{border-radius:8px 8px 0 0;}
+  nav.navrow.sub{background:var(--bg); border-top:none; padding:6px 16px;}
+  .tab{padding:12px 14px; font-size:14px; font-weight:600; color:var(--muted); border-bottom:2px solid transparent; cursor:pointer; white-space:nowrap;}
+  .tab.active{color:var(--accent); border-bottom-color:var(--accent);}
+  .subtab{padding:6px 12px; font-size:12.5px; font-weight:600; color:var(--muted); border-radius:14px; cursor:pointer; white-space:nowrap;}
+  .subtab.active{color:#fff; background:var(--accent);}
+  .panel{background:var(--panel); border:1px solid var(--line); border-top:none; padding:18px; margin-bottom:16px;}
+  .panel h3{margin:0 0 12px; font-size:14px; color:var(--muted); font-weight:600;}
+  .vitals-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:14px;}
+  .vital{border-left:3px solid var(--accent); padding-left:10px;}
+  .vital .v{font-size:19px; font-weight:700;} .vital .l{font-size:11.5px; color:var(--muted);}
+  .flag{color:var(--warn);}
+  ul.plain{margin:0; padding-left:18px; font-size:14.5px; line-height:1.7;}
+  table.data{width:100%; border-collapse:collapse; font-size:13px;}
+  table.data td, table.data th{padding:7px 6px; border:1px solid var(--line); text-align:left;}
+  table.data th{background:var(--accent-soft); color:var(--accent); font-size:11.5px;}
+  .badge{background:var(--danger-soft); color:var(--danger); font-size:10px; font-weight:700; padding:1px 5px; border-radius:4px; margin-left:5px;}
+  .badge-new{background:var(--accent-soft); color:var(--accent); font-size:10px; font-weight:700; padding:1px 5px; border-radius:4px; margin-left:5px;}
+  .doc{border-left:3px solid var(--line); padding:10px 0 10px 12px; margin-bottom:14px;}
+  .doc:last-child{margin-bottom:0;}
+  .doc .dh{font-size:13px; font-weight:700;} .doc .dm{font-size:11.5px; color:var(--muted); margin-bottom:6px;}
+  .doclink{display:inline-block; margin-top:6px; font-size:12.5px; font-weight:700; color:var(--accent); text-decoration:none;}
+  .sys-row{display:flex; gap:14px; padding:10px 0; border-bottom:1px solid var(--line); flex-wrap:wrap;}
+  .sys-row .sl{flex:0 0 130px; font-weight:700; font-size:13px;}
+  .sys-row .sd{flex:1 1 260px; font-size:13.5px; color:var(--muted);}
+  .sys-row input[type=text]{width:100%; border:1px solid var(--line); border-radius:5px; padding:6px 8px; font-family:inherit; font-size:13px; background:var(--bg); color:var(--ink); margin-top:4px;}
+  .addrow{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; align-items:center;}
+  .addrow input, .addrow select{border:1px solid var(--line); border-radius:5px; padding:6px 8px; font-size:12.5px; background:var(--bg); color:var(--ink); width:90px;}
+  .field-row{display:flex; gap:14px; flex-wrap:wrap; padding:10px 0; border-bottom:1px solid var(--line);}
+  .field-row .fl{flex:0 0 170px; font-weight:600; font-size:13px;}
+  .field-row .fo{flex:1 1 260px;}
+  select, input[type=number], input[type=text], textarea{border:1px solid var(--line); border-radius:5px; padding:6px 8px; font-size:13px; background:var(--bg); color:var(--ink); font-family:inherit;}
+  textarea{width:100%; min-height:80px; resize:vertical;}
+  .btn{background:var(--accent); color:#fff; border:none; padding:8px 14px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer;}
+  .btn-outline{background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent); padding:6px 11px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;}
+  .score-banner{background:var(--accent-soft); color:var(--accent); font-weight:700; padding:10px 14px; border-radius:6px; margin-top:12px; font-size:13.5px;}
+  .score-banner.risk{background:var(--danger-soft); color:var(--danger);}
+  .note{border-left:3px solid var(--line); padding:10px 0 10px 12px; margin-top:12px;}
+  .note .meta{font-size:11.5px; color:var(--muted); margin-bottom:4px;}
+  .empty{color:var(--muted); font-size:13.5px; font-style:italic;}
+  .contact-row{display:flex; gap:14px; font-size:13.5px; padding:6px 0; border-bottom:1px solid var(--line); flex-wrap:wrap;}
+  .unavailable{border:1px dashed var(--line); border-radius:8px; padding:16px; color:var(--muted); font-size:13px;}
+  .scan-input{width:100%; max-width:280px; margin:0 0 10px; display:block; border:1px solid var(--line); border-radius:6px; padding:8px 10px; font-family:'IBM Plex Mono',monospace; font-size:13px; background:var(--bg); color:var(--ink); text-align:center;}
+  .mar-row{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; padding:12px 0; border-bottom:1px solid var(--line); flex-wrap:wrap;}
+  .mar-barcode svg, .scan-gate svg{background:#fff; padding:4px; border-radius:4px; cursor:pointer;}
+  .rationale-btn{background:none; border:1px solid var(--line); color:var(--muted); font-size:11.5px; padding:4px 8px; border-radius:5px; cursor:pointer; margin-top:6px;}
+  .rationale{font-size:13px; margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); display:none;}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Simulated Client Records</div>
+  <div id="hdr-actions"></div>
+</header>
+<main>
+  <section id="screen-roster">
+    <h1 style="font-size:20px;">Client roster</h1>
+    <p style="color:var(--muted); font-size:14px;">Each case only shows the sections its author enabled.</p>
+    <div class="roster-grid" id="roster-grid"></div>
+  </section>
+  <section id="screen-chart">
+    <div class="headrow">
+      <div><div class="client-name" id="c-name"></div><div class="client-meta mono" id="c-meta"></div></div>
+      <div><div class="stagebar" id="stagebar"></div><div class="stagemeta" id="stagemeta"></div></div>
+    </div>
+    <div id="navlevels"></div>
+    <div id="tab-body"></div>
+  </section>
+</main>
+<script>
+let MODULES = {}, MASTER = [], CASE_INDEX = [];
+let activeCase = null, activeStages = null, stageIdx = 0, activePath = [], localState = {}, patientVerified = false, previewAll = false;
+
+async function boot(){
+  MODULES = await (await fetch('schema/modules.json')).json();
+  MASTER = await (await fetch('schema/master-sections.json')).json();
+  CASE_INDEX = await (await fetch('clients/index.json')).json();
+  renderRoster();
+}
+
+async function renderRoster(){
+  const cards = [];
+  for(const c of CASE_INDEX){
+    const kase = await (await fetch(c.path+'case.json')).json();
+    cards.push(kase);
+  }
+  document.getElementById('roster-grid').innerHTML = cards.map(k => `
+    <div class="client-card" data-id="${k.id}">
+      <div class="name">${k.identification.name}</div>
+      <div class="meta mono">MRN ${k.identification.mrn}</div>
+      <div class="tag">${k.identification.reasonForEncounter}</div>
+      <div class="pillrow">${flattenNodes(k.sections).map(n=>`<span class="pill">${n.label||labelFor(n.key)}</span>`).join('')}</div>
+      <div class="pillrow">${(k.meta.discipline||[]).map(d=>`<span class="pill" style="background:var(--bg);color:var(--muted);">${d}</span>`).join('')}</div>
+    </div>`).join('');
+  document.querySelectorAll('.client-card').forEach(card=>{
+    card.addEventListener('click', ()=> openCase(card.getAttribute('data-id')));
+  });
+}
+
+function flattenNodes(tree){ return tree; }
+function labelFor(key){ return (MODULES[key]&&MODULES[key].label) || key; }
+function findNode(key, tree){ for(const n of tree){ if(n.key===key) return n; if(n.children){ const r=findNode(key,n.children); if(r) return r; } } return null; }
+function findMasterNode(key){ return findNode(key, MASTER); }
+function caseHasKey(key, tree){ tree=tree||activeCase.sections; return !!findNode(key, tree); }
+
+async function openCase(id){
+  const entry = CASE_INDEX.find(c=>c.id===id);
+  activeCase = await (await fetch(entry.path+'case.json')).json();
+  activeStages = await (await fetch(entry.path+'stages.json')).json();
+  stageIdx = 0;
+  patientVerified = false;
+  localState = loadLocalState(id);
+  activePath = [activeCase.sections[0].key];
+  if(activeCase.sections[0].children) activePath.push(activeCase.sections[0].children[0].key);
+  document.getElementById('screen-roster').style.display='none';
+  document.getElementById('screen-chart').style.display='block';
+  document.getElementById('c-name').textContent = activeCase.identification.name;
+  document.getElementById('c-meta').textContent = `MRN ${activeCase.identification.mrn} · ${activeCase.identification.reasonForEncounter}`;
+  document.getElementById('hdr-actions').innerHTML = `<button class="hdr-btn" id="back-btn">← All clients</button>
+    <label class="hdr-btn" style="cursor:pointer;"><input type="checkbox" id="preview-toggle" style="margin-right:5px;">Preview: show all possible sections</label>
+    ${activeCase.exportable ? '<button class="hdr-btn" id="export-all">Export my documentation</button>' : ''}`;
+  document.getElementById('back-btn').addEventListener('click', ()=>{
+    document.getElementById('screen-chart').style.display='none';
+    document.getElementById('screen-roster').style.display='block';
+    renderRoster();
+  });
+  document.getElementById('preview-toggle').addEventListener('change', e=>{ previewAll = e.target.checked; renderNav(); renderBody(); });
+  if(activeCase.exportable) document.getElementById('export-all').addEventListener('click', exportWholeCase);
+  renderStageBar(); renderNav(); renderBody();
+}
+
+function renderStageBar(){
+  document.getElementById('stagebar').innerHTML = activeStages.map((s,i)=>
+    `<button class="stagebtn ${i===stageIdx?'active':''}" data-i="${i}">${s.label}</button>`).join('');
+  document.querySelectorAll('.stagebtn').forEach(b=>{
+    b.addEventListener('click', ()=>{ stageIdx = parseInt(b.getAttribute('data-i')); patientVerified=false; renderStageBar(); renderBody(); });
+  });
+  const s = activeStages[stageIdx];
+  document.getElementById('stagemeta').textContent = `${s.encounterType} · ${s.date}`;
+}
+
+function currentTree(){ return previewAll ? MASTER : activeCase.sections; }
+
+function renderNav(){
+  const container = document.getElementById('navlevels');
+  container.innerHTML = '';
+  let nodes = currentTree(), depth = 0;
+  while(nodes && nodes.length){
+    const key = activePath[depth];
+    const row = document.createElement('nav');
+    row.className = 'navrow' + (depth>0 ? ' sub' : '');
+    row.innerHTML = nodes.map(n=>{
+      const cls = depth===0 ? 'tab' : 'subtab';
+      const disabled = previewAll && !caseHasKey(n.key) ? ' style="opacity:.45;"' : '';
+      return `<div class="${cls} ${n.key===key?'active':''}" data-depth="${depth}" data-key="${n.key}"${disabled}>${n.label||labelFor(n.key)}</div>`;
+    }).join('');
+    container.appendChild(row);
+    const node = nodes.find(n=>n.key===key);
+    nodes = node && node.children ? node.children : null;
+    depth++;
+  }
+  container.querySelectorAll('[data-key]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const depth = parseInt(el.getAttribute('data-depth'));
+      activePath = activePath.slice(0,depth).concat([el.getAttribute('data-key')]);
+      const node = findNode(el.getAttribute('data-key'), currentTree());
+      if(node && node.children) activePath.push(node.children[0].key);
+      renderNav(); renderBody();
+    });
+  });
+}
+
+/* ---------------- local (browser-only, anonymous) student data ---------------- */
+function loadLocalState(id){ try{ return JSON.parse(localStorage.getItem('scr_'+id)) || {}; }catch(e){ return {}; } }
+function saveLocalState(){ try{ localStorage.setItem('scr_'+activeCase.id, JSON.stringify(localState)); }catch(e){} }
+function getLS(stageId, moduleKey, fallback){ return (localState[stageId] && localState[stageId][moduleKey]) || fallback; }
+function setLS(stageId, moduleKey, value){ localState[stageId] = localState[stageId] || {}; localState[stageId][moduleKey] = value; saveLocalState(); }
+function sessionCode(){ let c=sessionStorage.getItem('scr_code'); if(!c){ const p=()=>Math.random().toString(36).slice(2,6).toUpperCase(); c=p()+'-'+p(); sessionStorage.setItem('scr_code',c);} return c; }
+function val(id){ const el=document.getElementById(id); return el? el.value.trim() : ''; }
+
+/* ---------------- body rendering, dispatched by module "kind" ---------------- */
+function renderBody(){
+  const body = document.getElementById('tab-body');
+  const key = activePath[activePath.length-1];
+  const stage = activeStages[stageIdx];
+  const mod = MODULES[key];
+  if(!mod){ body.innerHTML = `<div class="panel unavailable">Unknown section "${key}".</div>`; return; }
+  if(previewAll && !caseHasKey(key)){
+    body.innerHTML = `<div class="panel unavailable"><strong>${mod.label}</strong> is available on the platform but is not enabled for this case.<br>Section type: <span class="mono">${mod.kind}</span>${mod.fields?` · Fields: ${mod.fields.map(f=>f.label).join(', ')}`:''}</div>`;
+    return;
+  }
+  const data = (stage.data || {})[key];
+  const renderers = {
+    summary: renderSummary, admission: renderAdmission, systemsChecklist: renderSystemsChecklist,
+    flowsheetTable: renderFlowsheetTable, ioRecord: renderIoRecord, scoredForm: renderScoredForm,
+    structuredForm: renderStructuredForm, notes: renderNotesTab, mar: renderMar,
+    ordersTable: renderOrdersTable, docList: renderDocList
+  };
+  (renderers[mod.kind] || (()=>{ body.innerHTML = '<div class="panel unavailable">No renderer for this kind yet.</div>'; }))(body, mod, key, stage, data);
+}
+
+function renderSummary(body, mod, key, stage, data){
+  const id = activeCase.identification, ov = data || {};
+  body.innerHTML = `<div class="panel"><h3>Client identification</h3>
+    <div class="vitals-grid">
+      <div class="vital"><div class="v" style="font-size:14px;">${id.name}</div><div class="l">${id.pronouns||''}</div></div>
+      <div class="vital"><div class="v" style="font-size:14px;">${id.dob}</div><div class="l">Date of birth</div></div>
+      <div class="vital"><div class="v" style="font-size:14px;">${id.codeStatus}</div><div class="l">Code status</div></div>
+      <div class="vital"><div class="v" style="font-size:14px;">${id.location}</div><div class="l">Location</div></div>
+    </div>
+    <p style="margin-top:12px; font-size:13.5px;"><strong>Most responsible provider:</strong> ${id.mostResponsibleProvider}<br>
+    <strong>Reason for encounter:</strong> ${id.reasonForEncounter}<br>
+    <strong>Status:</strong> ${ov.status||'—'}</p>
+    <p style="font-size:13.5px;"><strong>Allergies:</strong> ${(id.allergies||[]).map(a=>`${a.substance} (${a.type}) — ${a.reaction}, ${a.severity}`).join('; ') || 'NKDA'}</p>
+    <p style="font-size:13.5px;"><strong>Alerts:</strong> ${(id.alerts||[]).join(', ')||'None'}</p>
+    <p style="font-size:13.5px;"><strong>Diagnoses/problems:</strong> ${(id.diagnoses||[]).join(', ')}</p>
+    <p style="font-size:13.5px;"><strong>Precautions:</strong> ${(id.precautions||[]).join(', ')}</p>
+    </div>
+    ${ov.vitalsSummary ? `<div class="panel"><h3>Current vitals</h3><div class="vitals-grid">${
+      ov.vitalsSummary.map(v=>`<div class="vital"><div class="v ${v.flag?'flag':''}">${v.v}</div><div class="l">${v.l}</div></div>`).join('')
+    }</div></div>` : ''}
+    ${ov.findings ? `<div class="panel"><h3>Key findings</h3><ul class="plain">${ov.findings.map(f=>`<li>${f}</li>`).join('')}</ul>
+      ${activeCase.feedback && stage.data.notes && stage.data.notes.modelVitalsNote ? `
+        <div style="margin-top:14px;">
+          <textarea id="vitals-interp" placeholder="What do these vitals and findings mean clinically? Write your interpretation, then compare.">${getLS(stage.id,'overview',{}).interp||''}</textarea><br>
+          <button class="btn" id="save-interp" style="margin-top:8px;">Save</button>
+          <button class="btn-outline" id="reveal-vmodel" style="margin-left:8px;">Compare to a model interpretation</button>
+          <div id="vmodel-note" class="doc" style="display:none;margin-top:12px;"><div class="dh">Model interpretation</div><div>${stage.data.notes.modelVitalsNote}</div></div>
+        </div>` : ''}
+      </div>` : ''}`;
+  if(activeCase.feedback && stage.data.notes && stage.data.notes.modelVitalsNote){
+    document.getElementById('save-interp').addEventListener('click', ()=>{
+      const s = getLS(stage.id,'overview',{}); s.interp = document.getElementById('vitals-interp').value.trim(); setLS(stage.id,'overview',s);
+    });
+    document.getElementById('reveal-vmodel').addEventListener('click', ()=> document.getElementById('vmodel-note').style.display='block');
+  }
+}
+
+function renderAdmission(body){
+  const a = activeCase.admissionInfo || {}, id = activeCase.identification;
+  body.innerHTML = `<div class="panel"><h3>Demographics</h3>
+      <div class="contact-row"><div><strong>DOB:</strong> ${id.dob}</div><div><strong>MRN:</strong> ${id.mrn}</div><div><strong>Address:</strong> ${a.address||'—'}</div></div></div>
+    <div class="panel"><h3>Emergency contacts</h3>${(a.contacts||[]).map(c=>`<div class="contact-row"><div><strong>${c.name}</strong> (${c.relation})</div><div>${c.phone}</div></div>`).join('')||'<div class="empty">None on file.</div>'}</div>
+    <div class="panel"><h3>History of admission</h3><p>${a.historyOfAdmission||'—'}</p></div>
+    <div class="panel"><h3>Past health history</h3><ul class="plain">${(a.pastHealthHistory||[]).map(h=>`<li>${h}</li>`).join('')||'<li class="empty">None on file.</li>'}</ul></div>
+    <div class="panel"><h3>Plan of care</h3><p>${a.planOfCare||'—'}</p></div>`;
+}
+
+function renderSystemsChecklist(body, mod, key, stage, data){
+  const dd = data || {};
+  const saved = getLS(stage.id, key, {});
+  body.innerHTML = `<div class="panel"><h3>${mod.label} — by body system</h3>${
+    (activeCase.assessmentSystems||Object.keys(dd)).map(sys=>`
+      <div class="sys-row"><div class="sl">${sys}</div><div class="sd">${dd[sys]||'<span class="empty">No baseline data.</span>'}
+        <input type="text" class="da-input" data-sys="${sys}" placeholder="Add your assessment note..." value="${(saved[sys]||'').replace(/"/g,'&quot;')}"></div></div>`).join('')
+  }</div>`;
+  document.querySelectorAll('.da-input').forEach(inp=>{
+    inp.addEventListener('change', ()=>{ const s=getLS(stage.id,key,{}); s[inp.getAttribute('data-sys')]=inp.value; setLS(stage.id,key,s); });
+  });
+}
+
+function renderFlowsheetTable(body, mod, key, stage, data){
+  const rows = (data||[]).concat(mod.addable ? (getLS(stage.id,key,[])) : []);
+  body.innerHTML = `<div class="panel"><h3>${mod.label}</h3>
+    <table class="data"><thead><tr>${mod.columns.map(c=>`<th>${c.label}</th>`).join('')}</tr></thead>
+    <tbody>${rows.map(r=>`<tr>${mod.columns.map(c=>`<td>${r[c.key]||''}${c.key==='result'&&r.flag?'<span class="badge">FLAG</span>':''}</td>`).join('')}</tr>`).join('')}</tbody></table>
+    ${mod.addable ? `<div class="addrow">${mod.columns.filter(c=>c.key!=='by').map(c=>`<input type="text" id="fs-${c.key}" placeholder="${c.label}">`).join('')}<button class="btn" id="fs-add">Add</button></div>` : ''}
+    ${mod.addable ? `<div style="margin-top:10px;"><button class="btn-outline" id="sec-export">Export this section</button></div>` : ''}
+  </div>`;
+  if(mod.addable){
+    document.getElementById('fs-add').addEventListener('click', ()=>{
+      const row = {}; mod.columns.forEach(c=>{ if(c.key!=='by') row[c.key]=val('fs-'+c.key); });
+      row.by = 'Student';
+      if(!row[mod.columns[0].key]) return;
+      const arr = getLS(stage.id,key,[]); arr.push(row); setLS(stage.id,key,arr); renderBody();
+    });
+    document.getElementById('sec-export').addEventListener('click', ()=>exportSection(key, mod.label));
+  }
+}
+
+function renderIoRecord(body, mod, key, stage, data){
+  const rows = (data||[]).concat(getLS(stage.id,key,[]));
+  const intake = rows.filter(r=>r.type==='intake'), output = rows.filter(r=>r.type==='output');
+  const sum = a=>a.reduce((x,r)=>x+(parseFloat(r.amount)||0),0);
+  body.innerHTML = `<div class="panel"><h3>Intake & output</h3>
+    <table class="data"><thead><tr><th>Time</th><th>Category</th><th>Intake (mL)</th></tr></thead>
+    <tbody>${intake.map(r=>`<tr><td>${r.time}</td><td>${r.category}</td><td>${r.amount}</td></tr>`).join('')}</tbody></table>
+    <p style="font-size:12.5px;color:var(--muted);margin:6px 0 14px;">Intake total: <strong>${sum(intake)} mL</strong></p>
+    <table class="data"><thead><tr><th>Time</th><th>Category</th><th>Output (mL)</th></tr></thead>
+    <tbody>${output.map(r=>`<tr><td>${r.time}</td><td>${r.category}</td><td>${r.amount}</td></tr>`).join('')}</tbody></table>
+    <p style="font-size:12.5px;color:var(--muted);margin:6px 0 14px;">Output total: <strong>${sum(output)} mL</strong> · Balance: <strong>${sum(intake)-sum(output)} mL</strong></p>
+    <div class="addrow"><input type="text" id="io-time" placeholder="Time">
+      <select id="io-type"><option value="intake">Intake</option><option value="output">Output</option></select>
+      <select id="io-cat"><option>Oral</option><option>IV</option><option>Tube Feed</option><option>Void</option><option>Foley</option><option>Emesis</option><option>Stool</option><option>Other</option></select>
+      <input type="text" id="io-amt" placeholder="mL"><button class="btn" id="io-add">Add</button></div></div>`;
+  document.getElementById('io-add').addEventListener('click', ()=>{
+    const row = {time:val('io-time'), type:document.getElementById('io-type').value, category:document.getElementById('io-cat').value, amount:val('io-amt')};
+    if(!row.time||!row.amount) return;
+    const arr = getLS(stage.id,key,[]); arr.push(row); setLS(stage.id,key,arr); renderBody();
+  });
+}
+
+function renderScoredForm(body, mod, key, stage){
+  const saved = getLS(stage.id, key, {});
+  body.innerHTML = `<div class="panel"><h3>${mod.label}</h3>${
+    mod.fields.map(f=>`<div class="field-row"><div class="fl">${f.label}</div><div class="fo">${
+      f.options.map(([v,l])=>`<label style="display:inline-block;margin:2px 10px 2px 0;font-size:12.5px;"><input type="radio" name="sf-${f.key}" value="${v}" ${saved[f.key]===v?'checked':''}> ${l}</label>`).join('')
+    }</div></div>`).join('')
+  }<div id="sf-score"></div></div>`;
+  document.querySelectorAll('[name^="sf-"]').forEach(r=>{
+    r.addEventListener('change', e=>{ const k=e.target.name.replace('sf-',''); const s=getLS(stage.id,key,{}); s[k]=e.target.value; setLS(stage.id,key,s); updateScore(mod,key,stage); });
+  });
+  updateScore(mod,key,stage);
+}
+function updateScore(mod,key,stage){
+  const el = document.getElementById('sf-score'); if(!el) return;
+  const saved = getLS(stage.id,key,{});
+  if(mod.fields.some(f=>!saved[f.key])){ el.innerHTML=''; return; }
+  let total, label;
+  if(mod.scoring.type==='sum'){ total = mod.fields.reduce((a,f)=>a+parseInt(saved[f.key]),0); }
+  else { total = mod.fields.filter(f=>saved[f.key]===mod.scoring.value).length; }
+  const band = mod.scoring.bands.find(b=>total>=b[0]&&total<=b[1]);
+  label = band ? band[2] : '';
+  const risky = mod.scoring.type==='sum' ? total<=14 : total>=2;
+  el.innerHTML = `<div class="score-banner ${risky?'risk':''}">Score: ${total} — ${label}</div>`;
+}
+
+function renderStructuredForm(body, mod, key, stage, data){
+  const saved = getLS(stage.id, key, {});
+  body.innerHTML = `<div class="panel">${data ? `<h3>Reference documentation on file</h3><p style="font-size:13px;color:var(--muted);">${
+      mod.fields.map(f=>data[f.key]!==undefined&&data[f.key]!==''?`${f.label}: ${data[f.key]}`:null).filter(Boolean).join(' · ')
+    }</p>` : ''}
+    <h3>${data?'Complete your own assessment':mod.label}</h3>${
+    mod.fields.map(f=>`<div class="field-row"><div class="fl">${f.label}</div><div class="fo">${
+      f.type==='select' ? `<select data-f="${f.key}"><option value="">— select —</option>${f.options.map(o=>`<option ${saved[f.key]===o?'selected':''}>${o}</option>`).join('')}</select>`
+      : f.type==='textarea' ? `<textarea data-f="${f.key}" style="width:100%;">${saved[f.key]||''}</textarea>`
+      : `<input type="${f.type}" data-f="${f.key}" value="${saved[f.key]||''}" style="min-width:120px;">`
+    }</div></div>`).join('')
+  }<button class="btn" id="form-save" style="margin-top:10px;">Save</button></div>`;
+  document.getElementById('form-save').addEventListener('click', ()=>{
+    const s = {}; document.querySelectorAll('[data-f]').forEach(el=> s[el.getAttribute('data-f')] = el.value);
+    setLS(stage.id, key, s); renderBody();
+  });
+}
+
+function renderOrdersTable(body, mod, key, stage, data){
+  const rows = data || [];
+  body.innerHTML = `<div class="panel"><h3>Orders</h3>
+    <table class="data"><thead><tr><th>Category</th><th>Order</th><th>Detail</th><th>Frequency</th><th>Status</th></tr></thead>
+    <tbody>${rows.map(r=>`<tr><td>${r.category}</td><td>${r.name}${r.status==='New'?'<span class="badge-new">NEW</span>':''}</td><td>${r.detail}</td><td>${r.frequency}</td><td>${r.status}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+function renderDocList(body, mod, key, stage, data){
+  const rows = data || [];
+  body.innerHTML = `<div class="panel"><h3>${mod.label}</h3>${
+    rows.length ? rows.map(r=>`<div class="doc"><div class="dh">${mod.showProfession&&r.profession?r.profession+' — ':''}${r.title}</div><div class="dm">${r.meta||''}</div><div>${r.body}</div>${
+      r.link?`<a class="doclink" href="${r.link}" target="_blank" rel="noopener">View full report ↗</a>`:''
+    }</div>`).join('') : '<div class="empty">Nothing charted for this stage.</div>'
+  }</div>`;
+}
+
+function renderNotesTab(body, mod, key, stage, data){
+  const model = data || {};
+  const saved = getLS(stage.id, key, {notes:[], vitalsInterp:''});
+  body.innerHTML = `<div class="panel"><h3>Add a progress note</h3>
+      <textarea id="note-input" placeholder="Document your assessment..."></textarea><br>
+      <button class="btn" id="add-note" style="margin-top:8px;">Add note</button>
+      ${activeCase.feedback && model.modelNote ? `<button class="btn-outline" id="reveal-model" style="margin-left:8px;">Compare to a model example</button>
+        <div id="model-note" class="doc" style="display:none;margin-top:12px;"><div class="dh">Model documentation</div><div>${model.modelNote}</div></div>` : ''}
+    </div>
+    <div class="panel"><h3>Chart history</h3><div id="notes-list"></div>
+      <div style="text-align:right;margin-top:8px;"><button class="btn-outline" id="sec-export">Export this section</button></div></div>`;
+  renderNotesList(stage, key);
+  document.getElementById('add-note').addEventListener('click', ()=>{
+    const t = document.getElementById('note-input').value.trim(); if(!t) return;
+    const s = getLS(stage.id,key,{notes:[]}); s.notes = s.notes||[]; s.notes.push({ts:new Date().toLocaleString([], {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}), text:t});
+    setLS(stage.id,key,s); renderNotesList(stage,key);
+  });
+  if(activeCase.feedback && model.modelNote){
+    document.getElementById('reveal-model').addEventListener('click', ()=> document.getElementById('model-note').style.display='block');
+  }
+  document.getElementById('sec-export').addEventListener('click', ()=>exportSection(key, mod.label));
+}
+function renderNotesList(stage, key){
+  const s = getLS(stage.id, key, {notes:[]});
+  const list = document.getElementById('notes-list');
+  if(!s.notes || !s.notes.length){ list.innerHTML = '<div class="empty">No notes charted yet.</div>'; return; }
+  list.innerHTML = s.notes.slice().reverse().map(n=>`<div class="note"><div class="meta">${n.ts}</div><div>${n.text.replace(/</g,'&lt;')}</div></div>`).join('');
+}
+
+function renderMar(body, mod, key, stage, data){
+  const rows = data || [];
+  const charted = getLS(stage.id, key, {});
+  body.innerHTML = `<div class="panel"><h3>Medication administration</h3>
+    <input type="text" id="scan-input" class="scan-input" placeholder="Scan medication barcode, then Enter">
+    <div id="mar-list">${rows.map((m,i)=>{
+      const rec = charted[m.time+'|'+m.med]; const rid='rat-'+i;
+      return `<div class="mar-row"><div>
+        <div style="font-weight:600;font-size:14.5px;">${m.med}</div><div style="font-size:12px;color:var(--muted);">Due ${m.time}</div>
+        ${m.rationale?`<button class="rationale-btn" data-rid="${rid}">Why this matters</button><div class="rationale" id="${rid}">${m.rationale}</div>`:''}
+        </div>
+        ${rec ? `<div style="font-size:12.5px;color:var(--accent);font-weight:600;">Given ✓<span style="display:block;color:var(--muted);font-weight:400;">${rec}</span></div>`
+          : `<div class="mar-barcode"><svg class="med-bc" data-code="${m.barcode||''}" data-key="${m.time}|${m.med}"></svg><br><button class="rationale-btn" data-key="${m.time}|${m.med}" data-manual="1">Chart as given (no scanner)</button></div>`}
+      </div>`;
+    }).join('')}</div></div>`;
+  document.querySelectorAll('.med-bc').forEach(svg=>{
+    try{ if(window.JsBarcode && svg.getAttribute('data-code')) JsBarcode(svg, svg.getAttribute('data-code'), {format:'CODE128',width:1.6,height:32,displayValue:true,fontSize:10,margin:4}); }catch(e){}
+    svg.addEventListener('click', ()=> chartGiven(stage, key, svg.getAttribute('data-key'), rows));
+  });
+  document.querySelectorAll('.rationale-btn[data-rid]').forEach(b=> b.addEventListener('click', ()=>{ const el=document.getElementById(b.getAttribute('data-rid')); el.style.display = el.style.display==='block'?'none':'block'; }));
+  document.querySelectorAll('[data-manual]').forEach(b=> b.addEventListener('click', ()=> chartGiven(stage, key, b.getAttribute('data-key'), rows)));
+  document.getElementById('scan-input').addEventListener('keydown', e=>{
+    if(e.key==='Enter'){ const code=e.target.value.trim(); e.target.value='';
+      const match = rows.find(m=> m.barcode===code && !getLS(stage.id,key,{})[m.time+'|'+m.med]);
+      if(match) chartGiven(stage,key,match.time+'|'+match.med,rows);
+    }
+  });
+}
+function chartGiven(stage, key, mk, rows){
+  const c = getLS(stage.id, key, {});
+  c[mk] = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  setLS(stage.id, key, c); renderBody();
+}
+
+/* ---------------- export (anonymous, browser-only, per-section or whole case) ---------------- */
+function exportSection(key, label){
+  const code = sessionCode();
+  const lines = [`SCR export — ${label}`, `Case: ${activeCase.identification.name}`, `Anonymous code: ${code}`, `Exported: ${new Date().toLocaleString()}`, ''];
+  activeStages.forEach(s=>{
+    const v = (localState[s.id]||{})[key];
+    if(!v) return;
+    lines.push(`--- ${s.label} ---`);
+    lines.push(JSON.stringify(v, null, 2));
+    lines.push('');
+  });
+  downloadText(lines.join('\n'), `scr-${activeCase.id}-${key}-${code}.txt`);
+}
+function exportWholeCase(){
+  const code = sessionCode();
+  const lines = [`SCR export — full chart`, `Case: ${activeCase.identification.name}`, `Anonymous code: ${code}`, `Exported: ${new Date().toLocaleString()}`, ''];
+  activeStages.forEach(s=>{
+    lines.push(`=== ${s.label} ===`);
+    lines.push(JSON.stringify(localState[s.id]||{}, null, 2));
+    lines.push('');
+  });
+  downloadText(lines.join('\n'), `scr-${activeCase.id}-full-${code}.txt`);
+}
+function downloadText(text, filename){
+  const blob = new Blob([text], {type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+}
+
+boot();
+</script>
+</body>
+</html>

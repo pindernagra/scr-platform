@@ -1,0 +1,141 @@
+[
+  {
+    "id": "admission-day3",
+    "label": "Admission — Day 3",
+    "date": "2026-09-10",
+    "encounterType": "Hospital Admission",
+    "data": {
+      "overview": {
+        "status": "Acute, monitored",
+        "vitalsSummary": [
+          {"l":"BP","v":"148/92","flag":true},{"l":"HR","v":"96 bpm","flag":true},
+          {"l":"RR","v":"22/min","flag":true},{"l":"O2 Sat","v":"91% RA","flag":true},{"l":"Temp","v":"37.1°C","flag":false}
+        ],
+        "findings": ["Bilateral crackles auscultated in lower lung fields.", "2+ pitting edema, bilateral lower extremities.",
+          "Client reports mild dyspnea on exertion, denies chest pain.", "Skin warm, dry. Alert and oriented x4."]
+      },
+      "dailyAssessment": {
+        "safety":"Bedside safety checks q shift, falls risk assessment completed.",
+        "neuro":"Alert and oriented x4, speech clear, no focal deficits.",
+        "cardiac":"Irregular apical pulse (known A.fib), peripheral pulses palpable, extremities cool.",
+        "resp":"Bilateral crackles lower lobes, productive cough denied, using 2L O2 via NC.",
+        "gi":"Abdomen soft, non-distended, bowel sounds present, last BM 2 days ago.",
+        "gu":"Voiding without difficulty, urine clear yellow, Foley not in place.",
+        "msk":"Independent with bed mobility, 2+ pitting edema bilateral LE, ambulates with 1-person assist.",
+        "psychosocial":"Cooperative, appropriate affect, spoke with family by phone.",
+        "integ":"Skin warm and dry, no breakdown noted, edematous LE skin intact.",
+        "pain":"Denies pain at rest, mild discomfort with exertion 2/10."
+      },
+      "vitalsRecord": [
+        {"time":"0800","temp":"37.1","pulse":"96","resp":"22","bp":"148/92","o2":"91","by":"PN"},
+        {"time":"1200","temp":"37.0","pulse":"92","resp":"20","bp":"142/88","o2":"93","by":"PN"}
+      ],
+      "ioRecord": [
+        {"time":"0800","type":"intake","category":"Oral","amount":"120"},
+        {"time":"0800","type":"intake","category":"IV","amount":"75"},
+        {"time":"0900","type":"output","category":"Void","amount":"200"}
+      ],
+      "labs": [
+        {"test":"BNP","result":"850 pg/mL","range":"<100 pg/mL","category":"Chemistry","flag":true},
+        {"test":"Hemoglobin","result":"11.8 g/dL","range":"12.0–15.5 g/dL","category":"Hematology","flag":true},
+        {"test":"Potassium","result":"4.1 mmol/L","range":"3.5–5.0 mmol/L","category":"Chemistry","flag":false},
+        {"test":"Creatinine","result":"1.1 mg/dL","range":"0.6–1.2 mg/dL","category":"Chemistry","flag":false}
+      ],
+      "imaging": [
+        {"title":"Chest X-ray, PA/lateral","meta":"Day 3, 0715","body":"Bilateral perihilar haziness with small bilateral pleural effusions. Impression: findings consistent with pulmonary vascular congestion / heart failure exacerbation."}
+      ],
+      "orders": [
+        {"category":"medication","name":"Furosemide","detail":"40 mg PO","frequency":"Daily, 0800","status":"Active","date":"2026-09-10"},
+        {"category":"medication","name":"Lisinopril","detail":"10 mg PO","frequency":"Daily, 0800","status":"Active","date":"2026-09-10"},
+        {"category":"medication","name":"Metoprolol tartrate","detail":"25 mg PO","frequency":"BID, 0800/1700","status":"Active","date":"2026-09-10"},
+        {"category":"nursing","name":"Daily weights","detail":"Same scale, same time each AM","frequency":"Daily","status":"Active","date":"2026-09-10"},
+        {"category":"diet","name":"Low-sodium, diabetic diet","detail":"2g sodium restriction","frequency":"Ongoing","status":"Active","date":"2026-09-10"}
+      ],
+      "mar": [
+        {"med":"Furosemide 40 mg PO","time":"0800","barcode":"RX-FUR-40",
+         "rationale":"Before giving, confirm current BP and renal function; hold and notify the provider if systolic BP is under 90 or potassium is critically low. This client's potassium (4.1) and renal function are within safe range today."},
+        {"med":"Lisinopril 10 mg PO","time":"0800","barcode":"RX-LIS-10"},
+        {"med":"Metoprolol tartrate 25 mg PO","time":"0800","barcode":"RX-MET-25",
+         "rationale":"Hold parameters: do not give if heart rate is under 60 bpm or systolic BP is under 100. This client's HR is 96 and BP 148/92 — safe to administer."},
+        {"med":"Metoprolol tartrate 25 mg PO","time":"1700","barcode":"RX-MET-25"}
+      ],
+      "bpmh": [
+        {"med":"Furosemide","dose":"20 mg PO","freq":"Daily","last":"3 days ago (self-reported)","source":"Patient report","recon":"Increased to 40mg on admission"},
+        {"med":"Lisinopril","dose":"10 mg PO","freq":"Daily","last":"Day of admission","source":"Pharmacy record","recon":"Continued unchanged"},
+        {"med":"Metformin","dose":"500 mg PO","freq":"BID","last":"Day of admission","source":"Patient report","recon":"Held — NPO status pending, reassess"},
+        {"med":"Warfarin","dose":"5 mg PO","freq":"Daily","last":"Day before admission","source":"Pharmacy record","recon":"Continued, INR pending"}
+      ],
+      "notes": {
+        "modelNote": "S: Client reports mild dyspnea on exertion, denies chest pain. O: BP 148/92, HR 96, RR 22, SpO2 91% RA. Bilateral crackles auscultated in lower lobes, 2+ pitting edema bilateral LE. A: Fluid volume excess related to decreased cardiac output, as evidenced by adventitious lung sounds and peripheral edema. P: Continue diuretic and antihypertensive therapy per orders, monitor daily weights and I&O, reassess respiratory status each shift, elevate lower extremities as tolerated.",
+        "modelVitalsNote": "These vitals and findings—elevated BP/HR/RR, low O2 sat, bilateral crackles, and peripheral edema—together indicate volume overload from decompensated heart failure. The priority nursing concerns are impaired gas exchange and excess fluid volume; expect diuretic and afterload-reducing therapy, and prioritize reassessing respiratory status and daily weights."
+      }
+    }
+  },
+  {
+    "id": "day10-prredischarge",
+    "label": "Day 10 — Post-diuresis",
+    "date": "2026-09-17",
+    "encounterType": "Hospital Admission",
+    "data": {
+      "overview": {
+        "status": "Stable, improving",
+        "vitalsSummary": [
+          {"l":"BP","v":"128/78","flag":false},{"l":"HR","v":"78 bpm","flag":false},
+          {"l":"RR","v":"18/min","flag":false},{"l":"O2 Sat","v":"96% RA","flag":false},{"l":"Temp","v":"36.8°C","flag":false}
+        ],
+        "findings": ["Lung sounds clear bilaterally, crackles resolved.", "Trace edema, bilateral lower extremities — improved from 2+.",
+          "Client denies dyspnea, ambulating in hallway without difficulty.", "New order added today: potassium chloride, following diuresis."]
+      },
+      "dailyAssessment": {
+        "safety":"Bedside safety checks q shift, falls risk reassessed — unchanged.",
+        "neuro":"Alert and oriented x4, no changes.",
+        "cardiac":"Irregular apical pulse (known A.fib), pulses palpable, extremities warm.",
+        "resp":"Lungs clear, off supplemental O2, ambulating without dyspnea.",
+        "gi":"Abdomen soft, non-distended, bowel sounds present, BM this AM.",
+        "gu":"Voiding without difficulty, urine clear yellow.",
+        "msk":"Ambulating independently in hallway, trace edema bilateral LE.",
+        "psychosocial":"Cooperative, in good spirits, discussing discharge plans.",
+        "integ":"Skin warm and dry, no breakdown.",
+        "pain":"Denies pain."
+      },
+      "vitalsRecord": [{"time":"0800","temp":"36.8","pulse":"78","resp":"18","bp":"128/78","o2":"96","by":"DG"}],
+      "ioRecord": [
+        {"time":"0800","type":"intake","category":"Oral","amount":"240"},
+        {"time":"0900","type":"output","category":"Void","amount":"450"}
+      ],
+      "labs": [
+        {"test":"BNP","result":"210 pg/mL","range":"<100 pg/mL","category":"Chemistry","flag":true},
+        {"test":"Hemoglobin","result":"12.4 g/dL","range":"12.0–15.5 g/dL","category":"Hematology","flag":false},
+        {"test":"Potassium","result":"3.3 mmol/L","range":"3.5–5.0 mmol/L","category":"Chemistry","flag":true},
+        {"test":"Creatinine","result":"1.0 mg/dL","range":"0.6–1.2 mg/dL","category":"Chemistry","flag":false}
+      ],
+      "imaging": [
+        {"title":"Chest X-ray, PA/lateral","meta":"Day 10, 0730","body":"Improved aeration bilaterally, effusions much reduced compared to prior study. Impression: interval improvement, consistent with response to diuresis."}
+      ],
+      "orders": [
+        {"category":"medication","name":"Furosemide","detail":"40 mg PO","frequency":"Daily, 0800","status":"Active","date":"2026-09-10"},
+        {"category":"medication","name":"Lisinopril","detail":"10 mg PO","frequency":"Daily, 0800","status":"Active","date":"2026-09-10"},
+        {"category":"medication","name":"Metoprolol tartrate","detail":"25 mg PO","frequency":"BID, 0800/1700","status":"Active","date":"2026-09-10"},
+        {"category":"medication","name":"Potassium chloride","detail":"20 mEq PO","frequency":"Daily, 0800","status":"New","date":"2026-09-17"}
+      ],
+      "mar": [
+        {"med":"Furosemide 40 mg PO","time":"0800","barcode":"RX-FUR-40"},
+        {"med":"Lisinopril 10 mg PO","time":"0800","barcode":"RX-LIS-10"},
+        {"med":"Metoprolol tartrate 25 mg PO","time":"0800","barcode":"RX-MET-25"},
+        {"med":"Potassium chloride 20 mEq PO","time":"0800","barcode":"RX-KCL-20",
+         "rationale":"Verify the client can tolerate oral dosing and recheck the potassium trend. This client's level dropped to 3.3 after diuresis, which is why the order was added."},
+        {"med":"Metoprolol tartrate 25 mg PO","time":"1700","barcode":"RX-MET-25"}
+      ],
+      "bpmh": [
+        {"med":"Furosemide","dose":"20 mg PO","freq":"Daily","last":"Pre-admission","source":"Patient report","recon":"Increased to 40mg for this admission, reassess at discharge"},
+        {"med":"Lisinopril","dose":"10 mg PO","freq":"Daily","last":"Pre-admission","source":"Pharmacy record","recon":"Continued unchanged"},
+        {"med":"Metformin","dose":"500 mg PO","freq":"BID","last":"Pre-admission","source":"Patient report","recon":"Restarted Day 6, renal function stable"},
+        {"med":"Warfarin","dose":"5 mg PO","freq":"Daily","last":"Pre-admission","source":"Pharmacy record","recon":"Continued, INR therapeutic"}
+      ],
+      "notes": {
+        "modelNote": "S: Client denies dyspnea, ambulating in hallway without difficulty. O: BP 128/78, HR 78, RR 18, SpO2 96% RA. Lungs clear bilaterally, trace edema bilateral LE, improved from 2+. Labs notable for BNP improved to 210, potassium low at 3.3. A: Improving fluid status with response to diuresis; new risk for hypokalemia related to loop diuretic therapy. P: Administer potassium chloride per new order, continue monitoring electrolytes, encourage progressive ambulation, reinforce discharge teaching on daily weights and low-sodium diet.",
+        "modelVitalsNote": "Vitals have normalized and the crackles and edema have resolved, showing a good response to diuresis. The main new concern is the low potassium (3.3), a common side effect of loop diuretic therapy — watch for muscle weakness or cardiac dysrhythmia and confirm the new potassium order is given."
+      }
+    }
+  }
+]

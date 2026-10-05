@@ -1,0 +1,55 @@
+{
+  "id": "eleanor-whitmore",
+  "identification": {
+    "name": "Whitmore, Eleanor",
+    "preferredName": "Eleanor",
+    "pronouns": "she/her",
+    "dob": "1952-02-14",
+    "mrn": "00219-B",
+    "mostResponsibleProvider": "Dr. A. Chen, Internal Medicine",
+    "reasonForEncounter": "CHF exacerbation",
+    "location": "Medicine Unit, Room 412",
+    "codeStatus": "Full code",
+    "allergies": [
+      {"type": "Medication", "substance": "Penicillin", "reaction": "Hives", "severity": "Moderate"}
+    ],
+    "alerts": ["Fall risk", "Anticoagulated (warfarin)"],
+    "diagnoses": ["CHF exacerbation (EF 35%)", "Atrial fibrillation", "Hypertension", "Type 2 diabetes"],
+    "precautions": ["Fall precautions", "Strict I&O", "Daily weights"]
+  },
+  "meta": {
+    "discipline": ["Nursing", "LPN"],
+    "learnerLevel": "Intermediate",
+    "setting": "Medical",
+    "focusTags": ["CHF", "Fluid balance", "Polypharmacy", "Aging", "Falls"]
+  },
+  "assessmentSystems": ["safety","neuro","cardiac","resp","gi","gu","msk","psychosocial","integ","pain"],
+  "admissionInfo": {
+    "contacts": [{"name": "Daniel Whitmore", "relation": "Son", "phone": "250-555-0148"}],
+    "address": "142 Birchwood Cres, Kamloops, BC",
+    "historyOfAdmission": "Presented to ED with 3 days of worsening dyspnea, orthopnea, and lower extremity edema. Admitted for CHF exacerbation, likely related to dietary sodium indiscretion and medication non-adherence at home.",
+    "pastHealthHistory": ["Congestive heart failure (EF 35%)", "Atrial fibrillation, on anticoagulation", "Hypertension", "Type 2 diabetes, diet-controlled", "Osteoarthritis"],
+    "planOfCare": "Diurese to euvolemia, optimize heart failure medications, daily weights, strict I&O, diabetic and low-sodium diet teaching, cardiology follow-up post-discharge."
+  },
+  "feedback": true,
+  "exportable": true,
+  "sections": [
+    {"key": "overview", "label": "Overview"},
+    {"key": "admissionInfo", "label": "Admission Information"},
+    {"key": "nursingCare", "label": "Nursing Care", "folder": true, "children": [
+      {"key": "dailyAssessment", "label": "Daily Assessment"},
+      {"key": "vitalsRecord", "label": "Vital Signs"},
+      {"key": "ioRecord", "label": "I/O Record"},
+      {"key": "braden", "label": "Braden Scale"},
+      {"key": "fallsRisk", "label": "Falls Risk"},
+      {"key": "notes", "label": "Progress Notes"}
+    ]},
+    {"key": "labs", "label": "Diagnostics"},
+    {"key": "imaging", "label": "Diagnostic Imaging"},
+    {"key": "medication", "label": "Medication", "folder": true, "children": [
+      {"key": "mar", "label": "MAR"},
+      {"key": "bpmh", "label": "Best Possible Med. History"}
+    ]},
+    {"key": "orders", "label": "Orders"}
+  ]
+}

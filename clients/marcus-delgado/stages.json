@@ -1,0 +1,96 @@
+[
+  {
+    "id": "pod1",
+    "label": "POD 1 — 0700 assessment",
+    "date": "2026-09-14",
+    "encounterType": "Post-Operative",
+    "data": {
+      "overview": {
+        "status": "Post-operative, stable",
+        "vitalsSummary": [
+          {"l":"BP","v":"138/86","flag":false},{"l":"HR","v":"88 bpm","flag":false},
+          {"l":"RR","v":"18/min","flag":false},{"l":"O2 Sat","v":"95% RA","flag":false},{"l":"Temp","v":"37.6°C","flag":true}
+        ],
+        "findings": ["Dressing to right knee dry and intact, mild serosanguinous staining.", "Pain reported 6/10 at rest, 8/10 with movement.",
+          "Pedal pulses 2+ bilaterally, toes warm, cap refill <2 sec.", "Foley catheter in place, draining clear yellow urine."]
+      },
+      "dailyAssessment": {
+        "safety":"Bed in low position, call bell in reach, falls risk assessment completed.",
+        "neuro":"Alert and oriented x4, no deficits.",
+        "cardiac":"Regular pulse, peripheral pulses 2+ bilaterally, extremities warm.",
+        "resp":"Lungs clear bilaterally, incentive spirometry encouraged q1h while awake.",
+        "gi":"Abdomen soft, bowel sounds present, no BM since surgery.",
+        "gu":"Foley catheter in place, draining clear yellow urine.",
+        "msk":"Right knee immobilizer in place, 2-person assist for transfers, CPM machine per order.",
+        "integ":"Dressing to right knee dry and intact, mild serosanguinous staining.",
+        "pain":"6/10 at rest, 8/10 with movement, PCA/oral analgesia per order."
+      },
+      "vitalsRecord": [{"time":"0700","temp":"37.6","pulse":"88","resp":"18","bp":"138/86","o2":"95","by":"PN"}],
+      "wound": {"type":"Surgical 2° intent","length":"14","width":"1","depth":"","bed":"90% pink/red, 10% granulation",
+        "exudate":"Scant","exudateType":"Serosanguineous","odor":"No","periwound":"Intact","pain":"6",
+        "plan":"Dry dressing, reinforce as needed, monitor for signs of infection."},
+      "orders": [
+        {"category":"medication","name":"Oxycodone","detail":"5 mg PO","frequency":"Q4H PRN pain","status":"Active","date":"2026-09-13"},
+        {"category":"medication","name":"Cefazolin","detail":"1 g IV","frequency":"Q8H x 3 doses","status":"Active","date":"2026-09-13"},
+        {"category":"medication","name":"Enoxaparin","detail":"40 mg SubQ","frequency":"Daily","status":"Active","date":"2026-09-13"},
+        {"category":"treatment","name":"Incentive spirometry","detail":"10 breaths","frequency":"Q1H while awake","status":"Active","date":"2026-09-13"},
+        {"category":"consult","name":"Physical Therapy","detail":"Post-op mobility assessment","frequency":"Once","status":"Active","date":"2026-09-13"}
+      ],
+      "mar": [
+        {"med":"Cefazolin 1 g IV","time":"0800","barcode":"RX-CFZ-1G"},
+        {"med":"Enoxaparin 40 mg SubQ","time":"0900","barcode":"RX-ENOX-40"}
+      ],
+      "reports": [
+        {"title":"Operative report","meta":"Dr. R. Halvorsen, Orthopedic Surgery — Day of surgery",
+         "body":"Right total knee arthroplasty performed without complication. Estimated blood loss 150 mL. Patient tolerated the procedure well and was transferred to recovery in stable condition."}
+      ]
+    }
+  },
+  {
+    "id": "pod4",
+    "label": "POD 4 — pre-discharge",
+    "date": "2026-09-17",
+    "encounterType": "Post-Operative",
+    "data": {
+      "overview": {
+        "status": "Recovering as expected",
+        "vitalsSummary": [
+          {"l":"BP","v":"126/80","flag":false},{"l":"HR","v":"76 bpm","flag":false},
+          {"l":"RR","v":"16/min","flag":false},{"l":"O2 Sat","v":"98% RA","flag":false},{"l":"Temp","v":"36.9°C","flag":false}
+        ],
+        "findings": ["Incision healing well, staples intact, no drainage or erythema.", "Pain now 3/10, well controlled with oral medication.",
+          "Ambulating 50 ft with walker, PT clearance obtained today.", "Foley discontinued POD2, voiding without difficulty."]
+      },
+      "dailyAssessment": {
+        "safety":"Falls risk reassessed prior to discharge, education reinforced.",
+        "neuro":"Alert and oriented x4.",
+        "cardiac":"Regular pulse, pulses 2+ bilaterally.",
+        "resp":"Lungs clear, ambulating without dyspnea.",
+        "gi":"Bowel movement this AM, tolerating regular diet.",
+        "gu":"Foley discontinued POD2, voiding without difficulty.",
+        "msk":"Ambulating 50 ft with walker, PT clearance obtained.",
+        "integ":"Incision healing well, staples intact, no drainage or erythema.",
+        "pain":"3/10, well controlled with oral medication."
+      },
+      "vitalsRecord": [{"time":"0700","temp":"36.9","pulse":"76","resp":"16","bp":"126/80","o2":"98","by":"DG"}],
+      "wound": {"type":"Surgical 2° intent","length":"12","width":"0.5","depth":"","bed":"100% pink/red, epithelializing",
+        "exudate":"None","exudateType":"","odor":"No","periwound":"Intact","pain":"2",
+        "plan":"Staples to be removed at follow-up, continue dry dressing until then."},
+      "orders": [
+        {"category":"medication","name":"Oxycodone","detail":"5 mg PO","frequency":"Q4H PRN pain","status":"Active","date":"2026-09-13"},
+        {"category":"medication","name":"Enoxaparin","detail":"40 mg SubQ","frequency":"Daily x14 days total","status":"Active","date":"2026-09-13"},
+        {"category":"medication","name":"Docusate","detail":"100 mg PO","frequency":"BID","status":"New","date":"2026-09-17"}
+      ],
+      "mar": [
+        {"med":"Enoxaparin 40 mg SubQ","time":"0900","barcode":"RX-ENOX-40"},
+        {"med":"Docusate 100 mg PO","time":"0800","barcode":"RX-DOC-100"},
+        {"med":"Docusate 100 mg PO","time":"2000","barcode":"RX-DOC-100"}
+      ],
+      "reports": [],
+      "alliedHealth": [
+        {"profession":"Physical Therapy","title":"Mobility consult","meta":"J. Aoki, PT — POD 4",
+         "body":"Patient ambulating 50 feet with front-wheel walker, active ROM 0–90° flexion. Independent with home exercise program. Cleared for discharge to home with outpatient PT to follow."}
+      ]
+    }
+  }
+]
